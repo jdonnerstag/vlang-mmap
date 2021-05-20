@@ -20,7 +20,6 @@ pub:
 // or some other structure
 pub fn to_byte_array(addr voidptr, len u64) []byte {
 	b := []byte{}
-	eprintln('b.len before: $b.len')
 	unsafe {
 		// here b will be setup to work with the mmaped region
 		mut pdata := &b.data
