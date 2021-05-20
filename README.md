@@ -1,7 +1,7 @@
-# Memory Mapping support for [vlang](https://vlang.io)
+# Memory Mapping support for [V-lang](https://vlang.io)
 
 Inspired by [mman-win32](https://github.com/alitrack/mman-win32), this module
-provides [vlang](https://vlang.io) with easy to use memory mapping support. 
+provides [V-lang](https://vlang.io) with easy to use memory mapping support. 
 
 ## Key Features
 
