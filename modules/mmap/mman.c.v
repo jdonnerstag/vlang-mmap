@@ -18,7 +18,9 @@ pub:
 
 // to_byte_array mmap() returns a voidptr. Often you want a byte array,
 // or some other structure
-pub fn to_byte_array(addr voidptr, len u64) []byte {
+pub fn (mut this MmapInfo) vbytes() []byte {
+	unsafe { return this.addr.vbytes(int(this.fsize)) }
+	/*
 	b := []byte{}
 	unsafe {
 		// here b will be setup to work with the mmaped region
@@ -38,6 +40,11 @@ pub fn to_byte_array(addr voidptr, len u64) []byte {
 		}
 	}
 	return b
+*/
+}
+
+pub fn (mut this MmapInfo) bytestr() string {
+	return this.vbytes().bytestr()
 }
 
 pub struct MmapInfo {
@@ -64,6 +71,6 @@ pub fn mmap_file(file string) ?MmapInfo {
 		fd: f
 		fsize: u64(fsize)
 		addr: addr
-		data: to_byte_array(addr, fsize)
+		data: unsafe { addr.vbytes(int(fsize)) }
 	}
 }
