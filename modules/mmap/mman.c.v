@@ -18,7 +18,7 @@ pub:
 
 // to_byte_array mmap() returns a voidptr. Often you want a byte array,
 // or some other structure
-pub fn (mut this MmapInfo) vbytes() []byte {
+pub fn (this MmapInfo) vbytes() []byte {
 	unsafe { return this.addr.vbytes(int(this.fsize)) }
 	/*
 	b := []byte{}
@@ -43,7 +43,7 @@ pub fn (mut this MmapInfo) vbytes() []byte {
 */
 }
 
-pub fn (mut this MmapInfo) bytestr() string {
+pub fn (this MmapInfo) bytestr() string {
 	return this.vbytes().bytestr()
 }
 
