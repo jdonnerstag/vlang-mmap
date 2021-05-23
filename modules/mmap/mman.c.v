@@ -8,45 +8,25 @@ import os
 // MmapOptions These are the mmap() function arguments
 pub struct MmapOptions {
 pub:
-	addr   voidptr = C.NULL // No preferred virtual address
-	len    u64     = -1 // -1: use file size if fd != 0, else error
-	prot   int     = prot_read //
+	addr   voidptr = C.NULL 	  // No preferred virtual address
+	len    u64     = -1 		  // -1: use file size if fd != 0, else error
+	prot   int     = prot_read
 	flags  int     = map_shared
-	fd     int
-	offset u64 // beginning of file
+	fd     int  /* = 0 */
+	offset u64  /* = 0 */	      // beginning of file
 }
 
-// to_byte_array mmap() returns a voidptr. Often you want a byte array,
-// or some other structure
+// vbytes Cast the memory mapped region to []byte
 pub fn (this MmapInfo) vbytes() []byte {
 	unsafe { return this.addr.vbytes(int(this.fsize)) }
-	/*
-	b := []byte{}
-	unsafe {
-		// here b will be setup to work with the mmaped region
-		mut pdata := &b.data
-		mut plen := &b.len
-		mut pcap := &b.cap
-		*pdata = addr
-		*plen = int(len)
-		*pcap = int(len)
-
-		// V's compiler issues a warning that ll pXXX vars as "unused".
-		// Until that is fixed ...
-		if false {
-			_ = pdata
-			_ = plen
-			_ = pcap
-		}
-	}
-	return b
-*/
 }
 
+// bytestr Cast the memory mapped region to string
 pub fn (this MmapInfo) bytestr() string {
 	return this.vbytes().bytestr()
 }
 
+// MmapInfo The struct returned from mmap_file()
 pub struct MmapInfo {
 pub mut:
 	fd os.File
@@ -56,6 +36,7 @@ pub:
 	data  []byte
 }
 
+// close Unmap the memory mapped region and close the underlying file
 pub fn (mut this MmapInfo) close() {
 	munmap(this.addr, this.fsize) or { eprintln('ignored => $err') }
 
